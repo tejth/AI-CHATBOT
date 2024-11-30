@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const cookie = require("cookie");
 
@@ -69,3 +69,5 @@ userSchema.methods.getSignedToken = function (res) {
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+
+//ctrl shift k cleare line ,shift alt arrow copy line, ctrl alt edit both lines

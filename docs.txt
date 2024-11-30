@@ -15,6 +15,7 @@ If the password hasn’t been changed, the code inside the if statement gets tri
 If the password hasn't been modified, it simply calls next().
 This tells Mongoose to move on with the save operation without doing anything (i.e., skip the hashing process).
 
+
 4. const salt = await bcrypt.genSalt(10);
 If the password has been modified, this line generates a "salt".
 The salt is a random string added to the password to make it more secure.

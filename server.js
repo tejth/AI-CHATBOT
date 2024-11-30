@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+const errorHandler = require("./middlewares/errorMiddleware");
+
 //ROUTES PATH
 const authRoutes = require("./routes/authRoutes");
 //dotenv
@@ -21,6 +23,7 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8080;
 
