@@ -1,0 +1,82 @@
+///////hashed password function
+
+1. userSchema.pre("save", async function (next) {
+This line sets up a "pre-save" hook on a Mongoose schema (a blueprint for the data structure in MongoDB).
+The "save" part means this function will run just before the user data is saved to the database.
+The async function (next) is an asynchronous function that receives next as an argument. The next is used to tell Mongoose when the operation (like saving) should continue.
+
+2. if (!this.isModified("password")) {
+This line checks if the password has been modified (changed) since the last time it was saved.
+this refers to the current user document.
+.isModified("password") checks if the password field has been changed.
+If the password hasn’t been changed, the code inside the if statement gets triggered.
+
+3. return next(); // Skip hashing if password isn't modified
+If the password hasn't been modified, it simply calls next().
+This tells Mongoose to move on with the save operation without doing anything (i.e., skip the hashing process).
+
+4. const salt = await bcrypt.genSalt(10);
+If the password has been modified, this line generates a "salt".
+The salt is a random string added to the password to make it more secure.
+bcrypt.genSalt(10) creates a salt with 10 rounds of complexity (higher numbers mean more security but take longer to process).
+
+5. this.password = await bcrypt.hash(this.password, salt);
+This line hashes the password using the generated salt.
+bcrypt.hash takes the plain password and the salt, and turns the password into a hashed version that’s stored in the database.
+This is done because storing raw passwords in a database is insecure. Hashing makes it hard to reverse-engineer the original password.
+
+6. next();
+Finally, after the password has been hashed, the next() function is called.
+This tells Mongoose to proceed with saving the user document to the database.
+
+
+////SIGN TOKEN function
+userSchema.methods.getSignedToken = function (res) {
+This line is adding a custom method getSignedToken to a Mongoose schema (which is a blueprint for a user in the database).
+function (res) means this method takes a res parameter, which is the response object in an Express.js app (usually used for sending responses back to the client).
+
+2. const accessToken = JWT.sign(
+This line creates an access token using the JWT.sign() method from the jsonwebtoken library (JWT stands for JSON Web Token).
+The accessToken is used for authentication, allowing users to access protected resources or routes.
+
+3. { id: this._id },
+This is the payload of the access token, which includes the user's unique identifier (_id).
+this._id refers to the current user's ID in the database (the user associated with this getSignedToken method).
+
+4. process.env.JWT_ACCESS_SECRET,
+This is the secret key used to sign the access token.
+process.env.JWT_ACCESS_SECRET is an environment variable that contains the secret key, which ensures that only the server can create valid tokens.
+
+5. { expireIn: JWT_ACCESS_EXPIREIN }
+This sets the expiration time for the access token.
+JWT_ACCESS_EXPIREIN is another environment variable that holds the duration for how long the access token will remain valid (e.g., 1 hour, 15 minutes, etc.).
+\
+
+7. const refreshToken = JWT.sign(
+This line creates a refresh token in the same way as the access token.
+The refresh token is typically used to get a new access token when the current one expires.
+
+8. { id: this._id },
+Just like the access token, the refresh token includes the user's unique identifier (_id).
+
+9. process.env.JWT_REFRESH_TOKEN,
+This is the secret key used for signing the refresh token.
+process.env.JWT_REFRESH_TOKEN holds the secret for the refresh token (another environment variable).
+
+10. { expireIn: JWT_REFRESH_EXPIREIN }
+This sets the expiration time for the refresh token.
+JWT_REFRESH_EXPIREIN is another environment variable, specifying how long the refresh token will be valid (e.g., 7 days).
+
+
+12. res.cookie("refreshToken", ${refreshToken}, {
+This line sets a cookie in the response, sending it back to the client.
+The cookie is named "refreshToken" and contains the refresh token that was just created.
+
+13. maxAge: 86400 * 1000 * 7, // for a 7-day expiration
+This sets the expiration time for the refresh token cookie.
+86400 * 1000 * 7 calculates the time in milliseconds for 7 days (since there are 86,400 seconds in a day).
+
+14. httpOnly: true,
+This makes the cookie secure by ensuring that it can't be accessed by JavaScript on the client-side (only the server can access it).
+This helps protect the token from cross-site scripting (XSS) attacks.
+
