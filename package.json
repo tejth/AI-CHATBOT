@@ -1,0 +1,24 @@
+{
+  "name": "ai-bot",
+  "version": "1.0.0",
+  "description": "chatgpt clone",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "tejth",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.3",
+    "morgan": "^1.10.0",
+    "nodemin": "^1.0.1",
+    "nodemon": "^3.1.7"
+  }
+}

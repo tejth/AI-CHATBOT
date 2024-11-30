@@ -1,0 +1,33 @@
+# Ignore node_modules folder
+node_modules/
+
+# Ignore .env files (if you're using environment variables)
+.env
+
+# Ignore log files
+*.log
+
+# Ignore dependency directories for specific frameworks
+# For example, for Ruby on Rails:
+.bundle/
+config/database.yml
+log/*
+tmp/*
+public/uploads/
+
+# Ignore build artifacts (if any)
+dist/
+build/
+
+# Ignore system-specific files
+.DS_Store  # macOS-specific
+Thumbs.db  # Windows-specific
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore npm debug log files
+npm-debug.log*
